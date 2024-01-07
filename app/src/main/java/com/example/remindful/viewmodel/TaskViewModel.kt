@@ -1,4 +1,4 @@
-package com.example.remindful.view
+package com.example.remindful.viewmodel
 
 import androidx.lifecycle.ViewModel
 

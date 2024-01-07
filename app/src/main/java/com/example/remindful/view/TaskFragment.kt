@@ -10,8 +10,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.remindful.R
 import com.example.remindful.databinding.FragmentTaskBinding
+import com.example.remindful.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment() {
 
@@ -25,6 +29,9 @@ class TaskFragment : Fragment() {
     // make a reference to the view binding
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!
+    // declare a reference to the recycler view inside this fragment
+    private lateinit var recyclerView: RecyclerView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +44,10 @@ class TaskFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerView = binding.taskList
+        chooseLayout()
+    }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
         val layoutButton = menu.findItem(R.id.action_switch_layout)
@@ -52,7 +63,17 @@ class TaskFragment : Fragment() {
             else
                 ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
     }
-
+    private fun chooseLayout(){
+        when (isLinearLayoutManager){
+            true -> {
+                recyclerView.layoutManager = LinearLayoutManager(context)
+                //recyclerView.adapter =
+            }
+            false ->{
+                recyclerView.layoutManager = GridLayoutManager(context,2)
+            }
+        }
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
