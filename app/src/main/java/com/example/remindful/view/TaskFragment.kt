@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindful.R
 import com.example.remindful.databinding.FragmentTaskBinding
+import com.example.remindful.model.TaskListAdapter
 import com.example.remindful.viewmodel.TaskViewModel
 
 class TaskFragment : Fragment() {
@@ -67,10 +68,11 @@ class TaskFragment : Fragment() {
         when (isLinearLayoutManager){
             true -> {
                 recyclerView.layoutManager = LinearLayoutManager(context)
-                //recyclerView.adapter =
+                recyclerView.adapter = TaskListAdapter()
             }
             false ->{
                 recyclerView.layoutManager = GridLayoutManager(context,2)
+                recyclerView.adapter = TaskListAdapter()
             }
         }
     }
