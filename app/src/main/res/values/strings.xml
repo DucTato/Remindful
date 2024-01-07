@@ -5,4 +5,9 @@
     <string name="delete_task_button">Delete</string>
     <string name="label">Tasks</string>
     <string name="empty_task_message">No task for today :></string>
+    <string name="cancel">Cancel</string>
+    <string name="create_tasks">Create Tasks</string>
+    <string name="timer">Timer</string>
+    <string name="title">Title</string>
+    <string name="data">Date</string>
 </resources>
