@@ -45,9 +45,9 @@ class TaskListAdapter: ListAdapter<Task, TaskListAdapter.TaskListHolder>(DiffCal
         val binding = TaskViewBinding.inflate(inflater, parent, false)
         return TaskListHolder(binding)
     }
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+//    override fun getItemCount(): Int {
+//        TODO("Not yet implemented")
+//    }
 
     override fun onBindViewHolder(holder: TaskListHolder, position: Int) {
         holder.bind(getItem(position))
