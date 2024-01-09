@@ -2,13 +2,12 @@ package com.example.remindful.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.remindful.R
 import com.example.remindful.databinding.ActivityMainBinding
-import com.example.remindful.databinding.FragmentTaskBinding
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
@@ -22,11 +21,6 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         setupActionBarWithNavController(navController)
 
-        findViewById<Button>(R.id.new_task_button).setOnClickListener {
-            // define an action to this listener
-            val action = TaskFragmentDirections.actionTaskFragmentToAddTaskFragment()
-            navController.navigate(action)
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
