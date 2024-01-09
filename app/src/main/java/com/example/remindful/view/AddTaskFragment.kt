@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.remindful.R
+import com.example.remindful.databinding.FragmentAddTaskBinding
+import com.example.remindful.databinding.FragmentTaskBinding
 import com.example.remindful.viewmodel.AddTaskViewModel
 
 class AddTaskFragment : Fragment() {
@@ -14,6 +16,8 @@ class AddTaskFragment : Fragment() {
         fun newInstance() = AddTaskFragment()
     }
 
+    private var _binding: FragmentAddTaskBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: AddTaskViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +29,31 @@ class AddTaskFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_add_task, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAddTaskBinding.bind(view)
+        binding.apply {
+            tilDate.setOnClickListener {
+                // create new instance of DatePickerFragment
+                val datePickerFragment = DatePickerFragment()
+                val supportFragmentManager = requireActivity().supportFragmentManager
+
+                // we have to implement setFragmentResultListener
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val date = bundle.getString("SELECTED_DATE")
+                        tilDate.editText?.setText(date)
+                    }
+                }
+                // show
+                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
