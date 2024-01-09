@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.TaskFragment"
-    android:label="@string/label">
+    android:label="@string/main_label">
 
     <include
         android:id="@+id/empty_include"

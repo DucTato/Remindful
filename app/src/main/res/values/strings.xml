@@ -3,7 +3,8 @@
     <string name="action_switch_layout"></string>
     <string name="edit_task_button">Edit</string>
     <string name="delete_task_button">Delete</string>
-    <string name="label">Tasks</string>
+    <string name="main_label">Tasks</string>
+    <string name="add_task_lable">New task</string>
     <string name="empty_task_message">No task for today :></string>
     <string name="cancel">Cancel</string>
     <string name="create_tasks">Create Tasks</string>

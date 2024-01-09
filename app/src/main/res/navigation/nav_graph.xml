@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/taskFragment"
         android:name="com.example.remindful.view.TaskFragment"
-        android:label="fragment_task"
-        tools:layout="@layout/fragment_task" >
+        android:label="@string/main_label"
+        tools:layout="@layout/fragment_task">
         <action
             android:id="@+id/action_taskFragment_to_addTaskFragment"
             app:destination="@id/addTaskFragment" />
@@ -17,5 +17,5 @@
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.example.remindful.view.AddTaskFragment"
-        android:label="AddTaskFragment" />
+        android:label="@string/add_task_lable" />
 </navigation>
