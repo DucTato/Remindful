@@ -34,6 +34,9 @@ class TaskFragment : Fragment() {
     private val binding get() = _binding!!
     // declare a reference to the recycler view inside this fragment
     private lateinit var recyclerView: RecyclerView
+    //
+    private val adapter by lazy { TaskListAdapter() }
+
 
 
 
@@ -55,6 +58,7 @@ class TaskFragment : Fragment() {
             val action = TaskFragmentDirections.actionTaskFragmentToAddTaskFragment()
             findNavController().navigate(action)
         }
+        binding.taskList.adapter = adapter
         chooseLayout()
         drawList()
     }
@@ -93,7 +97,6 @@ class TaskFragment : Fragment() {
         else{
             binding.emptyInclude.emptyLayoutScreen.visibility = View.GONE
         }
-        val adapter by lazy { TaskListAdapter() }
         adapter.submitList(list)
     }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
