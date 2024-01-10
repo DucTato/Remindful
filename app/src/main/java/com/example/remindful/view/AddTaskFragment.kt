@@ -106,7 +106,10 @@ class AddTaskFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)
 //        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)

@@ -58,7 +58,7 @@ class TaskFragment : Fragment() {
             val action = TaskFragmentDirections.actionTaskFragmentToAddTaskFragment()
             findNavController().navigate(action)
         }
-        binding.taskList.adapter = adapter
+        recyclerView.adapter = adapter
         chooseLayout()
         drawList()
     }
@@ -88,6 +88,7 @@ class TaskFragment : Fragment() {
                 recyclerView.adapter = TaskListAdapter()
             }
         }
+        recyclerView.adapter = adapter
     }
     private fun drawList(){
         val list = DataSource.getList()
