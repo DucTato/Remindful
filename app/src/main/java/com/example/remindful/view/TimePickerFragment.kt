@@ -29,7 +29,6 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         calendar.set(Calendar.HOUR, hourOfDay)
         calendar.set(Calendar.MINUTE, minute )
         val selectedDate = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(calendar.time)
-
         val selectedDateBundle = Bundle()
         selectedDateBundle.putString("SELECTED_TIME", selectedDate)
         setFragmentResult("REQUEST_KEY", selectedDateBundle)

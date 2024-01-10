@@ -1,18 +1,35 @@
 package com.example.remindful.view
 
+import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.fragment.findNavController
 import com.example.remindful.extensions.text
 import com.example.remindful.R
 import com.example.remindful.aggregation.DataSource
 import com.example.remindful.databinding.FragmentAddTaskBinding
+import com.example.remindful.model.AlarmReceiver
 import com.example.remindful.model.Task
 import com.example.remindful.viewmodel.AddTaskViewModel
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class AddTaskFragment : Fragment() {
     companion object {
@@ -23,7 +40,10 @@ class AddTaskFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel: AddTaskViewModel
     private var taskId: Int = 0
+    private lateinit var pendingIntent: PendingIntent
+    private lateinit var calendar: Calendar
 
+    val timePickerFragment = TimePickerFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // check if this action comes with an argument or not
@@ -31,7 +51,9 @@ class AddTaskFragment : Fragment() {
             taskId = it.getString("taskId")!!.toInt()
         }
         setHasOptionsMenu(true)
+        createNotificationChannel()
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,13 +78,12 @@ class AddTaskFragment : Fragment() {
                     if (resultKey == "REQUEST_KEY") {
                         val date = bundle.getString("SELECTED_DATE")
                         tilDate.editText?.setText(date)
-
                     }
                 }
                 // show
                 datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
             }
-            tilTimer.editText?.setOnClickListener(){
+            tilTimer.editText?.setOnClickListener() {
                 val timePickerFragment = TimePickerFragment()
                 val supportFragmentManager = requireActivity().supportFragmentManager
                 supportFragmentManager.setFragmentResultListener(
@@ -91,9 +112,14 @@ class AddTaskFragment : Fragment() {
                 date = binding.tilDate.text,
                 id = taskId
             )
-            DataSource.insertTask(task)
-            // return to previous screen (fragment)
-            findNavController().navigateUp()
+            if (task.title.isEmpty() || task.hour.isEmpty() || task.date.isEmpty()) {
+                findNavController().navigateUp()
+            } else {
+                DataSource.insertTask(task)
+                // return to previous screen (fragment)
+                findNavController().navigateUp()
+                setAlarm(task)
+            }
         }
         // set default values in case the user is editing
         // an existing record
@@ -108,6 +134,39 @@ class AddTaskFragment : Fragment() {
             binding.buttonNewTask.setText(R.string.update_tasks)
         }
     }
+
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+           val name: CharSequence = "NotificationChannel"
+           val description = "Channel for Alarm Manager"
+           val importance = NotificationManager.IMPORTANCE_HIGH
+           val channel = NotificationChannel("myNotificationID",name,importance)
+           channel.description = description
+           val notificationManager = getSystemService(
+               this.requireContext(),NotificationManager::class.java
+           )
+           notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    private fun setAlarm(task: Task) {
+        val alarmManager = activity?.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this.requireContext(),AlarmReceiver::class.java)
+
+        pendingIntent = PendingIntent.getBroadcast(this.requireContext(),0,intent,
+            PendingIntent.FLAG_IMMUTABLE)
+        val text = task.hour
+        val pattern = DateTimeFormatter.ofPattern("HH:mm")
+        val localTime = LocalTime.parse(text, pattern)
+        val milliseconds = ((localTime.hour * 60L + localTime.minute) * 60L) * 1000L
+
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP,milliseconds,
+            pendingIntent
+        )
+        Toast.makeText(this.requireContext(),"Alarm set successfully", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
