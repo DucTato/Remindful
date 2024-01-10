@@ -35,7 +35,7 @@ class AddTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddTaskBinding.bind(view)
         binding.apply {
-            tilDate.setOnClickListener {
+            tilDate.editText?.setOnClickListener {
                 // create new instance of DatePickerFragment
                 val datePickerFragment = DatePickerFragment()
                 val supportFragmentManager = requireActivity().supportFragmentManager
@@ -48,12 +48,30 @@ class AddTaskFragment : Fragment() {
                     if (resultKey == "REQUEST_KEY") {
                         val date = bundle.getString("SELECTED_DATE")
                         tilDate.editText?.setText(date)
+
                     }
                 }
                 // show
                 datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
             }
+            tilTimer.editText?.setOnClickListener(){
+                val timePickerFragment = TimePickerFragment()
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val time = bundle.getString("SELECTED_TIME")
+                        tilTimer.editText?.setText(time)
+
+                    }
+                }
+                // show
+                timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            }
         }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
