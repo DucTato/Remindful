@@ -17,5 +17,10 @@
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.example.remindful.view.AddTaskFragment"
-        android:label="@string/add_task_lable" />
+        android:label="@string/add_task_lable" >
+        <argument
+            android:name="taskId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

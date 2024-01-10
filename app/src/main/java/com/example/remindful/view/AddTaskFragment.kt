@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.remindful.extensions.text
 import com.example.remindful.R
+import com.example.remindful.aggregation.DataSource
 import com.example.remindful.databinding.FragmentAddTaskBinding
+import com.example.remindful.model.Task
 import com.example.remindful.viewmodel.AddTaskViewModel
 
 class AddTaskFragment : Fragment() {
@@ -18,10 +22,24 @@ class AddTaskFragment : Fragment() {
     private var _binding: FragmentAddTaskBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AddTaskViewModel
+    private var taskId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            taskId = it.getString("taskId")!!.toInt()
+        }
         setHasOptionsMenu(true)
+        // set default values in case the user is editing
+        // an existing record
+        if (taskId != 0)
+        {
+            DataSource.findById(taskId)?.let {
+                binding.tilTitle.text = it.title
+                binding.tilDate.text = it.date
+                binding.tilTimer.text = it.hour
+            }
+        }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +88,23 @@ class AddTaskFragment : Fragment() {
                 timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
             }
         }
+        // return to previous navigation
+        binding.buttonCancel.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
+        // set listener for the create task button
+        binding.buttonNewTask.setOnClickListener {
+            val task = Task(
+                title = binding.tilTitle.text,
+                hour = binding.tilTimer.text,
+                date = binding.tilDate.text,
+                id = taskId
+            )
+            DataSource.insertTask(task)
+            // return to previous screen (fragment)
+            findNavController().navigateUp()
+        }
     }
 
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {

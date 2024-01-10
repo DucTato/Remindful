@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.remindful.R
+import com.example.remindful.aggregation.DataSource
 import com.example.remindful.databinding.FragmentTaskBinding
 import com.example.remindful.model.TaskListAdapter
 import com.example.remindful.viewmodel.TaskViewModel
@@ -54,6 +55,7 @@ class TaskFragment : Fragment() {
             findNavController().navigate(action)
         }
         chooseLayout()
+        drawList()
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
@@ -80,6 +82,15 @@ class TaskFragment : Fragment() {
                 recyclerView.layoutManager = GridLayoutManager(context,2)
                 recyclerView.adapter = TaskListAdapter()
             }
+        }
+    }
+    private fun drawList(){
+        val list = DataSource.getList()
+        if(list.isEmpty()){
+            binding.emptyInclude.emptyLayoutScreen.visibility = View.VISIBLE
+        }
+        else{
+            binding.emptyInclude.emptyLayoutScreen.visibility = View.GONE
         }
     }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
