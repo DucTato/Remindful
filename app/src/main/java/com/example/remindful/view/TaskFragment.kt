@@ -58,9 +58,9 @@ class TaskFragment : Fragment() {
             val action = TaskFragmentDirections.actionTaskFragmentToAddTaskFragment()
             findNavController().navigate(action)
         }
-        recyclerView.adapter = adapter
         chooseLayout()
         drawList()
+        updateListeners()
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
@@ -73,19 +73,17 @@ class TaskFragment : Fragment() {
             return
         }
         menuItem.icon =
-            if (isLinearLayoutManager) ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
+            if (isLinearLayoutManager) ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
             else
-                ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_linear_layout)
+                ContextCompat.getDrawable(this.requireContext(), R.drawable.ic_grid_layout)
     }
     private fun chooseLayout(){
         when (isLinearLayoutManager){
             true -> {
                 recyclerView.layoutManager = LinearLayoutManager(context)
-                recyclerView.adapter = TaskListAdapter()
             }
             false ->{
                 recyclerView.layoutManager = GridLayoutManager(context,2)
-                recyclerView.adapter = TaskListAdapter()
             }
         }
         recyclerView.adapter = adapter
@@ -99,6 +97,16 @@ class TaskFragment : Fragment() {
             binding.emptyInclude.emptyLayoutScreen.visibility = View.GONE
         }
         adapter.submitList(list)
+    }
+    private fun updateListeners(){
+        adapter.listenerDelete = {
+            DataSource.deleteTask(it)
+            drawList()
+        }
+        adapter.listenerEdit ={
+            val action = TaskFragmentDirections.actionTaskFragmentToAddTaskFragment(it.id.toString())
+            findNavController().navigate(action)
+        }
     }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)
@@ -118,7 +126,6 @@ class TaskFragment : Fragment() {
                 // Sets layout and icon
                 chooseLayout()
                 setIcon(item)
-
                 return true
             }
             // Otherwise, do nothing and use the core event handling
