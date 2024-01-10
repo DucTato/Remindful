@@ -36,6 +36,7 @@ class TaskFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -92,6 +93,8 @@ class TaskFragment : Fragment() {
         else{
             binding.emptyInclude.emptyLayoutScreen.visibility = View.GONE
         }
+        val adapter by lazy { TaskListAdapter() }
+        adapter.submitList(list)
     }
 //    override fun onActivityCreated(savedInstanceState: Bundle?) {
 //        super.onActivityCreated(savedInstanceState)
