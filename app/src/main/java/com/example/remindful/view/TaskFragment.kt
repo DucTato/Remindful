@@ -28,7 +28,7 @@ class TaskFragment : Fragment() {
 
     private lateinit var viewModel: TaskViewModel
     // this bool is here to determine the state of the current layout
-    private var isLinearLayoutManager: Boolean = false
+    private var isLinearLayoutManager: Boolean = true
     // make a reference to the view binding
     private var _binding: FragmentTaskBinding? = null
     private val binding get() = _binding!!

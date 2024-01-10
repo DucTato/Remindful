@@ -9,10 +9,11 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleCentered="true"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:title="@string/create_tasks" />
+        app:title="@string/create_tasks"
+        app:titleCentered="true" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guid_start"
