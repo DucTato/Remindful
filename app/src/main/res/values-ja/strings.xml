@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Remindful</string>
+    <string name="action_switch_layout"></string>
+    <string name="edit_task_button">更新</string>
+    <string name="delete_task_button">削除</string>
+    <string name="main_label">タスク</string>
+    <string name="add_task_lable">新しいタスク</string>
+    <string name="empty_task_message">今日タスクがないよ！</string>
+    <string name="cancel">キャンセル</string>
+    <string name="create_tasks">タスクを追加</string>
+    <string name="timer">タイマー</string>
+    <string name="title">題名</string>
+    <string name="data">日</string>
+</resources>
