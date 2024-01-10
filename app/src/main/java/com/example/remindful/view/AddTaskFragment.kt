@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.remindful.R
 import com.example.remindful.databinding.FragmentAddTaskBinding
-import com.example.remindful.databinding.FragmentTaskBinding
 import com.example.remindful.viewmodel.AddTaskViewModel
 
 class AddTaskFragment : Fragment() {
@@ -74,10 +73,10 @@ class AddTaskFragment : Fragment() {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+//    override fun onActivityCreated(savedInstanceState: Bundle?) {
+//        super.onActivityCreated(savedInstanceState)
+//        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
+//        // TODO: Use the ViewModel
+//    }
 
 }
