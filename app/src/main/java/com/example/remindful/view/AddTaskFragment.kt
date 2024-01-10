@@ -26,20 +26,11 @@ class AddTaskFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // check if this action comes with an argument or not
         arguments?.let {
             taskId = it.getString("taskId")!!.toInt()
         }
         setHasOptionsMenu(true)
-        // set default values in case the user is editing
-        // an existing record
-        if (taskId != 0)
-        {
-            DataSource.findById(taskId)?.let {
-                binding.tilTitle.text = it.title
-                binding.tilDate.text = it.date
-                binding.tilTimer.text = it.hour
-            }
-        }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +72,6 @@ class AddTaskFragment : Fragment() {
                     if (resultKey == "REQUEST_KEY") {
                         val time = bundle.getString("SELECTED_TIME")
                         tilTimer.editText?.setText(time)
-
                     }
                 }
                 // show
@@ -104,6 +94,18 @@ class AddTaskFragment : Fragment() {
             DataSource.insertTask(task)
             // return to previous screen (fragment)
             findNavController().navigateUp()
+        }
+        // set default values in case the user is editing
+        // an existing record
+        if (taskId != 0) {
+            // Set up text from the previously selected task
+            DataSource.findById(taskId)?.let {
+                binding.tilTitle.text = it.title
+                binding.tilDate.text = it.date
+                binding.tilTimer.text = it.hour
+            }
+            // set up new prompt for the button
+            binding.buttonNewTask.setText(R.string.update_tasks)
         }
     }
     override fun onDestroyView() {
