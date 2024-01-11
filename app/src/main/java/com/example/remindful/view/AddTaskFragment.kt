@@ -28,6 +28,7 @@ import com.example.remindful.model.Task
 import com.example.remindful.viewmodel.AddTaskViewModel
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
@@ -158,8 +159,12 @@ class AddTaskFragment : Fragment() {
         val text = task.hour
         val pattern = DateTimeFormatter.ofPattern("HH:mm")
         val localTime = LocalTime.parse(text, pattern)
-        val milliseconds = ((localTime.hour * 60L + localTime.minute) * 60L) * 1000L
-
+        val now = LocalDateTime.now()
+        val alarmDateTime = LocalDateTime.of(now.toLocalDate(), localTime)
+        val milliseconds = alarmDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        if (alarmDateTime.isBefore(now)) {
+            alarmDateTime.plusDays(1)
+        }
         alarmManager.set(
             AlarmManager.RTC_WAKEUP,milliseconds,
             pendingIntent
